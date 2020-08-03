@@ -3,6 +3,7 @@ package com.mastertech.cartao.service;
 import com.mastertech.cartao.client.ClienteClient;
 import com.mastertech.cartao.dto.CartaoClienteDTO;
 import com.mastertech.cartao.dto.CartaoDTO;
+import com.mastertech.cartao.dto.CartaoStatusDTO;
 import com.mastertech.cartao.exceptions.CartaoNaoEncontradoException;
 import com.mastertech.cartao.model.Cartao;
 import com.mastertech.cartao.model.Cliente;
@@ -80,10 +81,24 @@ public class CartaoService {
         return repository.findAll();
     }
 
-    public CartaoDTO ativar(String numero){
+    public CartaoDTO ativar(String numero, CartaoStatusDTO status){
         List<Cartao> c = repository.findByNumero(numero);
         Cartao cartao = c.get(0);
-        cartao.setAtivo(true);
+        cartao.setAtivo(status.isAtivo());
+        repository.save(cartao);
+        CartaoDTO dto = new CartaoDTO();
+        dto.setIdCartao(cartao.getIdCartao());
+        dto.setAtivo(cartao.isAtivo());
+        dto.setIdCliente(cartao.getIdCliente());
+        dto.setNumero(cartao.getNumero());
+
+        return dto;
+    }
+
+    public CartaoDTO desativar(String numero){
+        List<Cartao> c = repository.findByNumero(numero);
+        Cartao cartao = c.get(0);
+        cartao.setAtivo(false);
         repository.save(cartao);
         CartaoDTO dto = new CartaoDTO();
         dto.setIdCartao(cartao.getIdCartao());

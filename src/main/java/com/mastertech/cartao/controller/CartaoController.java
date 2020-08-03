@@ -1,6 +1,7 @@
 package com.mastertech.cartao.controller;
 
 import com.mastertech.cartao.dto.CartaoDTO;
+import com.mastertech.cartao.dto.CartaoStatusDTO;
 import com.mastertech.cartao.service.CartaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,8 @@ public class CartaoController {
 
 
     @PatchMapping("/cartao/{numero}")
-    public ResponseEntity ativar(@PathVariable String numero) {
-        return ResponseEntity.ok(service.ativar(numero));
+    public ResponseEntity setStatus(@PathVariable String numero, @RequestBody CartaoStatusDTO status) {
+        return ResponseEntity.ok(service.ativar(numero, status));
     }
 
 }
