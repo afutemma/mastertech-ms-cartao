@@ -11,19 +11,19 @@ public class Cartao implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idCartao;
     private String numero;
-    private int clienteId;
+    private int idCliente;
     private boolean ativo;
 
     public Cartao() {
     }
 
 
-    public int getClienteId() {
-        return clienteId;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setClienteId(int clienteId) {
-        this.clienteId = clienteId;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public int getIdCartao() {

@@ -14,19 +14,23 @@ public class CartaoController {
 
     @PostMapping("/cartao")
     public ResponseEntity postCartao(@RequestBody CartaoDTO cartao) {
-        return ResponseEntity.ok(service.save(cartao));
+        return ResponseEntity.ok(service.salvar(cartao));
     }
 
 
     @GetMapping("/cartao/{numero}")
     public ResponseEntity getCartao(@PathVariable String numero) {
-        return ResponseEntity.ok(service.findByNumero(numero));
+        return ResponseEntity.ok(service.buscarPorNumero(numero));
     }
 
+    @GetMapping("/cartao/{idCartao}/cliente/{idCliente}")
+    public ResponseEntity getCartaoCliente(@PathVariable int idCartao, @PathVariable int idCliente) {
+        return ResponseEntity.ok(service.buscarClienteCartao(idCliente, idCartao));
+    }
 
     @GetMapping("/cartao/byId/{id}")
     public ResponseEntity getCartao(@PathVariable int id) {
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(service.buscaPorId(id));
     }
 
 

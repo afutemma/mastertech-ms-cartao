@@ -1,7 +1,9 @@
 package com.mastertech.cartao.service;
 
 import com.mastertech.cartao.client.ClienteClient;
+import com.mastertech.cartao.dto.CartaoClienteDTO;
 import com.mastertech.cartao.dto.CartaoDTO;
+import com.mastertech.cartao.exceptions.CartaoNaoEncontradoException;
 import com.mastertech.cartao.model.Cartao;
 import com.mastertech.cartao.model.Cliente;
 import com.mastertech.cartao.repository.CartaoRepository;
@@ -19,29 +21,29 @@ public class CartaoService {
     @Autowired
     private ClienteClient clienteClient;
 
-    public Optional<Cartao> findById(int id){
+    public Optional<Cartao> buscaPorId(int id){
         return repository.findById(id);
     }
 
 
-    public CartaoDTO findByNumero(String numero){
+    public CartaoDTO buscarPorNumero(String numero){
         List<Cartao> c = repository.findByNumero(numero);
         Cartao cartao = c.get(0);
         CartaoDTO dto = new CartaoDTO();
         dto.setIdCartao(cartao.getIdCartao());
         dto.setAtivo(cartao.isAtivo());
-        dto.setClienteId(cartao.getClienteId());
+        dto.setIdCliente(cartao.getIdCliente());
         dto.setNumero(cartao.getNumero());
 
         return dto;
     }
 
-    public CartaoDTO save(CartaoDTO cadastro){
+    public CartaoDTO salvar(CartaoDTO cadastro){
         Cartao cartao = new Cartao();
         Cliente cliente = new Cliente();
-        cliente = clienteClient.getClienteById(String.valueOf(cadastro.getClienteId()));
+        cliente = clienteClient.getClientePorId(String.valueOf(cadastro.getIdCliente()));
         cartao.setNumero(cadastro.getNumero());
-        cartao.setClienteId(cliente.getIdCliente());
+        cartao.setIdCliente(cadastro.getIdCliente());
         cartao.setAtivo(false);
 
         repository.save(cartao);
@@ -51,7 +53,30 @@ public class CartaoService {
         return cadastro;
     }
 
-    public List<Cartao> findAll() {
+    public CartaoClienteDTO buscarClienteCartao(int idCliente, int idCartao){
+        Optional<Cartao> op = buscaPorId(idCartao);
+        CartaoClienteDTO response = new CartaoClienteDTO();
+
+        if(!op.isPresent()){
+            throw new CartaoNaoEncontradoException();
+        }
+
+        Cartao cartao = op.get();
+        Cliente cliente = new Cliente();
+
+        cliente = clienteClient.getClientePorId(String.valueOf(idCliente));
+
+        response.setNome(cliente.getNome());
+        response.setNumero(cartao.getNumero());
+        response.setIdCliente(cartao.getIdCliente());
+        response.setAtivo(cartao.isAtivo());
+        response.setIdCartao(cartao.getIdCartao());
+
+        return response;
+
+    }
+
+    public List<Cartao> buscaTodos() {
         return repository.findAll();
     }
 
@@ -63,7 +88,7 @@ public class CartaoService {
         CartaoDTO dto = new CartaoDTO();
         dto.setIdCartao(cartao.getIdCartao());
         dto.setAtivo(cartao.isAtivo());
-        dto.setClienteId(cartao.getClienteId());
+        dto.setIdCliente(cartao.getIdCliente());
         dto.setNumero(cartao.getNumero());
 
         return dto;
