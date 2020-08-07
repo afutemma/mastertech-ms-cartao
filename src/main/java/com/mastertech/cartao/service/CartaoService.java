@@ -95,17 +95,4 @@ public class CartaoService {
         return dto;
     }
 
-    public CartaoDTO desativar(String numero){
-        List<Cartao> c = repository.findByNumero(numero);
-        Cartao cartao = c.get(0);
-        cartao.setAtivo(false);
-        repository.save(cartao);
-        CartaoDTO dto = new CartaoDTO();
-        dto.setIdCartao(cartao.getIdCartao());
-        dto.setAtivo(cartao.isAtivo());
-        dto.setIdCliente(cartao.getIdCliente());
-        dto.setNumero(cartao.getNumero());
-
-        return dto;
-    }
 }

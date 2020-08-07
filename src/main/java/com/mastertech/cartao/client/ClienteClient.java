@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name="cliente", configuration = ClienteClientConfiguration.class)
+@FeignClient(name="cliente", configuration = OAuth2FeignConfiguration.class)
 public interface ClienteClient {
 
     @GetMapping("/v1/cliente/{id}")

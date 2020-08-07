@@ -18,7 +18,15 @@ public class CartaoController {
         return ResponseEntity.ok(service.salvar(cartao));
     }
 
+    @PostMapping("/teste/cartao")
+    public ResponseEntity postCartaoTeste(@RequestBody CartaoDTO cartao) {
+        return ResponseEntity.ok(service.salvar(cartao));
+    }
 
+    @GetMapping("/teste/cartao/{numero}")
+    public ResponseEntity getCartaoTeste(@PathVariable String numero) {
+        return ResponseEntity.ok(service.buscarPorNumero(numero));
+    }
     @GetMapping("/cartao/{numero}")
     public ResponseEntity getCartao(@PathVariable String numero) {
         return ResponseEntity.ok(service.buscarPorNumero(numero));
